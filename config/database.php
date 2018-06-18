@@ -32,7 +32,6 @@ return [
     | choice installed on your machine before you begin development.
     |
     */
-    $db_config = get_db_config();
 
     'connections' => [
 
