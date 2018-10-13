@@ -16,3 +16,11 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('/users/{user}', function (App\Models\User $user) {
+    return 'the name is: ' . $user->name . ' ' . 'and the email is: ' . $user->email;
+});
+
+Route::get('profile/{user_model}', function (App\Models\User $user) {
+    dd($user);
+});
