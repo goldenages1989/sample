@@ -12,7 +12,9 @@ class CityController extends Controller
     //
     public function index()
     {
-        $lines = City::find(1)->lines()->where('id',1)->first()->steps;
+//        $lines = City::find(1)->lines()->where('id',1)->first()->steps;
+        //hasManyThrough
+        $lines = City::find(1)->steps;
         return StepResource::collection($lines);
     }
 }

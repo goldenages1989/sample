@@ -15,4 +15,9 @@ class City extends Model
     {
         return $this->hasMany(Line::class);
     }
+
+    public function steps()
+    {
+        return $this->hasManyThrough(Step::class, Line::class);
+    }
 }
