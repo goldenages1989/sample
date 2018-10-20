@@ -25,6 +25,15 @@ Route::delete('/logout', 'SessionsController@destory')->name('logout');
 //account activation
 Route::get('signup/confirm/{token}', 'UsersController@confirmEmail')->name('confirm_email');
 
+//password reset
+Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
+Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
+Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
+Route::post('password/reset', 'Auth\ResetPasswordController@reset')->name('password.update');
+
+Route::resource('statuses', 'StatusesController', ['only' => ['store', 'destroy']]);
+
+//############################文档测试##################################
 //test
 Route::get('user/{id?}/profile', function ($id = 2) {
     $url = route('profile');
@@ -57,10 +66,34 @@ Route::name('admin.')->group(function () {
 Route::get('form', function () {
     return '<form method="post" action="/foo"><button type="submit">提交</button></form>';
 });
-//password reset
-Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
-Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
-Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
-Route::post('password/reset', 'Auth\ResetPasswordController@reset')->name('password.update');
 
-Route::resource('statuses', 'StatusesController', ['only' => ['store', 'destroy']]);
+//csrf token
+Route::get('form_without_csrf_token', function () {
+    return '<form method="POST" action="/hello_from_form"><button type="submit">提交</button></form>';
+});
+
+Route::get('form_with_csrf_token', function () {
+    return '<form method="POST" action="/hello_from_form">' . csrf_field() . '<button type="submit">提交</button></form>';
+});
+
+Route::get('hello_from_form', function () {
+    return 'hello laravel!';
+});
+
+//response
+Route::get('cookie/add', function () {
+    $minutes = 2;
+    return response('welcome to laravel demo!')->cookie('name','laravel name',$minutes);
+});
+
+Route::get('cookie/get', function (\Illuminate\Http\Request $request) {
+    $cookie = $request->cookie('name');
+    dd($cookie);
+});
+
+//eloquent
+Route::get('/citys', 'CityController@index');
+
+
+
+Route::get('/home', 'HomeController@index')->name('home');
